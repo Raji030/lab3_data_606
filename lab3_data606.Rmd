@@ -1,0 +1,106 @@
+---
+title: "lab 3_data_606"
+author: "Mahmud Hasan Al Raji"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+## Required libraries:
+
+```{r }
+library(tidyverse)
+library(openintro)
+```
+## Kobe Bryant 2009 NBA finals data
+
+```{r}
+data("kobe_basket")
+glimpse(kobe_basket)
+```
+
+## Exercise 1: What does a streak length of 1 mean, i.e. how many hits and misses are in a streak of 1? What about a streak length of 0?
+** Ans 1: A streak length of 1 means only one hit (basket made) has occurred until a miss or consecutive misses occur. A streak of 1 consists of only one hit and one miss or consecutive misses.
+A streak length of 0 means no hit occurs. Only one miss or consecutive misses have been occurred.
+
+
+## Exercise 2: Describe the distribution of Kobe’s streak lengths from the 2009 NBA finals. What was his typical streak length? How long was his longest streak of baskets? Make sure to include the accompanying plot in your answer.
+
+** Ans 2: Kobe’s streak lengths distribution is consisted of streak lengths of 0,1,2,3 and 4, where streak length of 0 has been occurred at most of the times. On the other hand, streak length of 4 has been occurred at minimal times. Kobe’s longest streak of baskets is 4.
+
+## Kobe streak lenght distribution:
+
+```{r}
+kobe_streak <- calc_streak(kobe_basket$shot)
+ggplot(data = kobe_streak, aes(x = length)) +
+  geom_bar()
+```
+
+## Simulation of flipping the unfair coin 100 times
+
+```{r }
+coin_outcomes<-c("heads","tails")
+set.seed(03020)
+sim_unfair_coin<-sample(coin_outcomes, size=100, replace=TRUE, prob=c(0.2,0.8))
+sim_unfair_coin
+table(sim_unfair_coin)
+```
+## Exercise 3: In your simulation of flipping the unfair coin 100 times, how many flips came up heads? Include the code for sampling the unfair coin in your response. 
+
+** Ans 3: In my simulation of flipping the unfair coin 100 times, 16 flips came up with heads. The code is given above.
+
+## Code given to simulate a single shot of an Independent Shooter with 50% shooting pecentage
+
+```{r}
+shot_outcomes <- c("H", "M")
+sim_basket <- sample(shot_outcomes, size = 1, replace = TRUE)
+```
+
+## Exercise 4: What change needs to be made to the sample function so that it reflects a shooting percentage of 45%? Make this adjustment, then run a simulation to sample 133 shots. Assign the output of this simulation to a new object called sim_basket.
+
+**Ans 4: To get 45% shooting percentage, addition of a 'prob' argument is required with the sample function. Below is the required simulation code with 133 shots: 
+
+```{r}
+shot_outcomes <- c("H", "M")
+set.seed(0409)
+sim_basket <- sample(shot_outcomes, size = 133, replace = TRUE, prob=c(0.45,0.55))
+sim_basket
+```
+## Exercise 5: Using calc_streak, compute the streak lengths of sim_basket, and save the results in a data frame called sim_streak.
+
+** Ans 5: Code related to streak lengths calculation using calc_streak function and saving the data frame in sim_streak object is given below:
+
+```{r }
+sim_streak<-calc_streak (sim_basket)
+glimpse(sim_streak)
+```
+## Exercise 6: Describe the distribution of streak lengths. What is the typical streak length for this simulated independent shooter with a 45% shooting percentage? How long is the player’s longest streak of baskets in 133 shots? Make sure to include a plot in your answer.
+
+** Ans 6: To get the answers of the aobove question following code is required:
+
+```{r }
+ggplot(data = sim_streak, aes(x = length)) +
+  geom_bar()
+```
+It is seen from above plot that the streak lengths distribution is comprised of streak lengths of 0,1,2,3,4 and 5. Typical streak length is 0 and the longest one is 5.
+
+## Exercise 7: If you were to run the simulation of the independent shooter a second time, how would you expect its streak distribution to compare to the distribution from the question above? Exactly the same? Somewhat similar? Totally different? Explain your reasoning.
+
+** Ans 7: To answer the above question rerunning the previous simulation code is required.  
+
+```{r }
+shot_outcomes <- c("H", "M")
+set.seed(0234)
+sim_basket <- sample(shot_outcomes, size = 133, replace = TRUE, prob=c(0.45,0.55))
+sim_basket
+sim_streak<-calc_streak (sim_basket)
+glimpse(sim_streak)
+ggplot(data = sim_streak, aes(x = length)) +
+  geom_bar()
+```
+From the above streak lengths distribution plot, it is seen that the distribution is almost similar to the previous distribution.The distribution's typical streak length is 0, second longest streak length is 1 for both. The only difference is in their maximum streak length. That is 4 for the first run and 5 for the second run. Hence, it can be said that if i were to run the simulaion I will get a streak distribution with little bit diffrence in streak length number. It won't be the exact as because of the difference in busket hitting order. 
+
+## Exercise 8: How does Kobe Bryant’s distribution of streak lengths compare to the distribution of streak lengths for the simulated shooter? Using this comparison, do you have evidence that the hot hand model fits Kobe’s shooting patterns? Explain.
+
+** Ans 8: They are almost similar. For both of them typical streak length is 0, second longest is 1. Only the difference is in their longest streak length. For Kobe Bryant's distribution the maximum streak length is 4 whereas for the indepenednt shooter it is 5. Even though there is some variation, there is no evidence so far of a hot hand.
+
+
